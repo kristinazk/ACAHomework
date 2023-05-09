@@ -24,8 +24,8 @@ class SpectralClustering_Own:
 
                 for ind in indices[0]:
                     affinity_matr[i][ind] = np.exp((-dist_matr[i][ind] ** 2) / median ** 2)
+            affinity_matr += 1e-6  # Making the graph connected so that in case of KNN there are no errors.
 
-        # In case of full I get an error (the reason is unknown to me)
         if self.construct == 'Full':
             for i in range(len(X)):
                 for j in range(len(X)):
@@ -60,7 +60,7 @@ class SpectralClustering_Own:
         return dist_matr
 
     def predict(self):
-        eigenvals, eigenvects = np.linalg.eig(self.laplacian_matrix)
+        eigenvals, eigenvects = np.linalg.eigh(self.laplacian_matrix)
 
         eigenvects = eigenvects[:, np.argsort(eigenvals)]
 
