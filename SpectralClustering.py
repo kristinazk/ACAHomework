@@ -15,11 +15,11 @@ class SpectralClustering_Own:
     def calc_affinity(self, X):
         # To calculate affinity we find 5 neighbors and calculate the gaussian similarity
         dist_matr = self.dist_calc(X)
-        median = np.median(dist_matr)  # Will be used as sigma
+        median = 0.2 * np.median(dist_matr)  # Will be used as sigma
         affinity_matr = np.zeros((len(X), len(X)))
         if self.construct == 'KNN':
             for i in range(len(X)):
-                k_neighbors = NearestNeighbors(n_neighbors=5, algorithm='ball_tree').fit(np.delete(X, i, axis=0))
+                k_neighbors = NearestNeighbors(n_neighbors=100, algorithm='ball_tree').fit(np.delete(X, i, axis=0))
                 _, indices = k_neighbors.kneighbors(X[i].reshape(1, -1))
 
                 for ind in indices[0]:
@@ -78,7 +78,7 @@ X_moons, y_moons = make_moons(n_samples=1000, noise=0.08, random_state=0)
 
 scaler = StandardScaler()
 
-sc = SpectralClustering_Own(k=2, construct='KNN', laplacian='normalized')
+sc = SpectralClustering_Own(k=2, construct='Full', laplacian='normalized')
 
 sc.fit(scaler.fit_transform(X_moons))
 
