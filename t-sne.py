@@ -22,7 +22,7 @@ class t_SNE:
             qs = self.calc_qs(distances_y[i])
             prev_val = y[i]
             for _ in range(self.num_it):
-                y[i] += self.rate * self.calc_gradient(probas, qs, y, i) + self.momentum * (y[i] - prev_val)
+                y[i] += self.rate * self.calc_gradient(probas, qs, y, i) - self.momentum * (y[i] - prev_val)
                 prev_val = y[i]
 
         return y
